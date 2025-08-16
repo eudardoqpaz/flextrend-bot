@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+  <h2>Settings</h2>
+  <form method="post" action="/settings" class="settings-form">
+    <label>Watchlist (coma):</label>
+    <input type="text" name="watchlist" value="{{ settings.watchlist | join(',') }}">
+    <label>Riesgo por operación (%):</label>
+    <input type="number" step="0.01" name="risk_per_trade" value="{{ (settings.risk_per_trade*100) | round(2) }}"
+           oninput="this.nextElementSibling.value=this.value/100">
+    <output style="display:none">{{ settings.risk_per_trade }}</output>
+    <label>Apalancamiento por defecto:</label>
+    <input type="number" name="default_leverage" value="{{ settings.default_leverage }}">
+    <label>Cooldown (seg):</label>
+    <input type="number" name="cooldown_sec" value="{{ settings.cooldown_sec }}">
+    <label>Permitir TODOS los símbolos</label>
+    <select name="allow_all_symbols">
+      <option value="false" {% if not settings.allow_all_symbols %}selected{% endif %}>No</option>
+      <option value="true" {% if settings.allow_all_symbols %}selected{% endif %}>Sí</option>
+    </select>
+    <button type="submit">Guardar</button>
+  </form>
+</section>
+{% endblock %}

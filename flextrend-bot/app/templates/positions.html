@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+  <h2>Posiciones</h2>
+  <table>
+    <thead><tr><th>Símbolo</th><th>Cant</th><th>Lado</th><th>Entrada</th><th>PNL U</th></tr></thead>
+    <tbody>
+    {% for p in positions %}
+      {% set amt = p.positionAmt | float %}
+      {% if amt != 0 %}
+      <tr>
+        <td>{{ p.symbol }}</td>
+        <td>{{ ('%.4f' % (amt | abs)) }}</td>
+        <td>{{ 'LONG' if amt>0 else 'SHORT' }}</td>
+        <td>{{ '%.6f' % (p.entryPrice | float) }}</td>
+        <td>{{ '%.2f' % (p.unRealizedProfit | float) }}</td>
+      </tr>
+      {% endif %}
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

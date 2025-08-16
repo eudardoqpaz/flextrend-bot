@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+  <h2>Logs</h2>
+  <p>Logs de aplicación (últimos 200)</p>
+  <table>
+    <thead><tr><th>TS</th><th>Nivel</th><th>Mensaje</th></tr></thead>
+    <tbody>
+    {% for l in logs %}
+      <tr><td>{{ l.ts }}</td><td>{{ l.level }}</td><td>{{ l.msg }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

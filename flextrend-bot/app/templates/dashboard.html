@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+  <h2>Estado</h2>
+  <div class="grid">
+    <div><strong>Testnet:</strong> {{ 'Sí' if settings.use_testnet else 'No' }}</div>
+    <div><strong>Riesgo/Trade:</strong> {{ '%.2f' % (settings.risk_per_trade*100) }}%</div>
+    <div><strong>Apalancamiento:</strong> x{{ settings.default_leverage }}</div>
+    <div><strong>Cooldown:</strong> {{ settings.cooldown_sec }} s</div>
+    <div><strong>Watchlist:</strong> {{ settings.watchlist | join(', ') }}</div>
+    <div><strong>Allow ALL:</strong> {{ 'Sí' if settings.allow_all_symbols else 'No' }}</div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Posiciones (Binance Futures)</h2>
+  <table>
+    <thead><tr><th>Símbolo</th><th>Cant</th><th>Lado</th><th>Precio Entrada</th><th>PNL U</th></tr></thead>
+    <tbody>
+    {% for p in positions %}
+      {% set amt = p.positionAmt | float %}
+      {% if amt != 0 %}
+      <tr>
+        <td>{{ p.symbol }}</td>
+        <td>{{ ('%.4f' % (amt | abs)) }}</td>
+        <td>{{ 'LONG' if amt>0 else 'SHORT' }}</td>
+        <td>{{ '%.6f' % (p.entryPrice | float) }}</td>
+        <td>{{ '%.2f' % (p.unRealizedProfit | float) }}</td>
+      </tr>
+      {% endif %}
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}
